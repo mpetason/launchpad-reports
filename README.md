@@ -2,7 +2,9 @@
 
 Requirements: launchpadlib
 
-The purpose of this script is to pull bugs created by a list of users and a date range. 
+Update cache directory: cachedir = "/home/{user}/.launchpadlib/cache/"
+
+The purpose of this script is to pull bugs created by a list of users and a date range. Currently it matches the simple search in Launchpad and does not include fixed/invalid/unchecked values under tasks. 
 
 usage: launchpad_report.py [-h] [-u USERNAMES [USERNAMES ...]] [-d DAYS]
 
