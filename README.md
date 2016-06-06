@@ -1,6 +1,6 @@
 # launchpad-reports
 
-Requirements: launchpadlib
+Requirements: launchpadlib, simplejson
 
 Create a cache directory: cachedir = "./launchpadlib/cache/"
 
