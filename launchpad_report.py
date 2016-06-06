@@ -11,7 +11,12 @@ launchpad = Launchpad.login_anonymously('just testing', 'production', cachedir, 
 def created_bugs(users):
     output = {}
     for user in users:
-        for i in launchpad.people(user).searchTasks():
+        for i in launchpad.people(user).searchTasks(status=[
+                                "New","Opinion","Invalid",
+                                "Won't Fix","Expired","Confirmed","Triaged",
+                                "In Progress","Fix Committed","Fix Released",
+                                "Incomplete (with response)",
+                                "Incomplete (without response)"]):
              if i.owner.name == user:
                  output.setdefault(user, [])
                  output[user].append(i)
