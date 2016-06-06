@@ -5,7 +5,7 @@ from launchpadlib.launchpad import Launchpad
 from datetime import timedelta, datetime
 import argparse
 
-cachedir = "/home/mpetason/.launchpadlib/cache/"
+cachedir = ".launchpadlib/cache/"
 launchpad = Launchpad.login_anonymously('just testing', 'production', cachedir, version='devel')
 
 def created_bugs(users):
@@ -47,4 +47,4 @@ if __name__ == "__main__":
         for user in bug_reporters:
             filtered_bugs[user] = filter_bugs(bugs[user], args.days)
             for i in filtered_bugs[user]:
-                print "[" + user + "]" + i.web_link
+                print "[" + user + "]" +  "[" + i.web_link + "]"

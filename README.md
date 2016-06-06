@@ -2,7 +2,7 @@
 
 Requirements: launchpadlib
 
-Update cache directory: cachedir = "/home/{user}/.launchpadlib/cache/"
+Create a cache directory: cachedir = "./launchpadlib/cache/"
 
 The purpose of this script is to pull bugs created by a list of users and a date range.  
 
