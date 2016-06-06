@@ -17,3 +17,9 @@ optional arguments:
   -u USERNAMES [USERNAMES ...], --usernames USERNAMES [USERNAMES ...] enter usernames separated by spaces.
   
   -d DAYS, --days DAYS  number of days to go back.
+
+
+
+Output Will look like:
+
+[user][bug_url]
