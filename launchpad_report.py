@@ -22,7 +22,7 @@ def created_bugs(users):
                  output[user].append(i)
     return output
  
-def filter_by_day(bugs, num_days):
+def filter_by_days(bugs, num_days):
     date_range = datetime.today() - timedelta(days=num_days)
     output = []
     for bug in bugs:
@@ -56,7 +56,7 @@ if __name__ == "__main__":
         filtered_bugs = {}
         for user in bug_reporters:
             bug_count = 0
-            filtered_bugs[user] = filter_by_day(bugs[user], args.days)
+            filtered_bugs[user] = filter_by_days(bugs[user], args.days)
             for i in filtered_bugs[user]:
                 bug_count = bug_count + 1
                 print "[" + str(bug_count) + "]" + "[" + user + "]" +  "[" + i.web_link + "]"
