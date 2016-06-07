@@ -31,6 +31,11 @@ def filter_by_day(bugs, num_days):
     return output
 
 def filter_by_date(bugs, date):
+#    output = []
+#    for bug in bugs:
+#        if bug.date_created.replace(tzinfo=None) > date:
+#            output.append(bug)
+#    return output
     pass
 
 if __name__ == "__main__":
@@ -39,6 +44,8 @@ if __name__ == "__main__":
                         help = 'enter usernames separated by spaces.')
     parser.add_argument('-d', '--days', help = 'number of days to go back.',
                         type=int)
+#    parser.add_argument('-D', '--date', help = 'date in M-D-Y format',
+#                        type=int)
     args = parser.parse_args()
 
     if not args.usernames:
