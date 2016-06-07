@@ -22,7 +22,7 @@ def created_bugs(users):
                  output[user].append(i)
     return output
  
-def filter_bugs(bugs, num_days):
+def filter_by_day(bugs, num_days):
     date_range = datetime.today() - timedelta(days=num_days)
     output = []
     for bug in bugs:
@@ -30,7 +30,8 @@ def filter_bugs(bugs, num_days):
             output.append(bug)
     return output
 
-    # add a function to work with date instead of days
+def filter_by_date(bugs, date):
+    pass
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Launchpad bug Reports.')
@@ -47,6 +48,8 @@ if __name__ == "__main__":
         bugs = created_bugs(bug_reporters)
         filtered_bugs = {}
         for user in bug_reporters:
-            filtered_bugs[user] = filter_bugs(bugs[user], args.days)
+            bug_count = 0
+            filtered_bugs[user] = filter_by_day(bugs[user], args.days)
             for i in filtered_bugs[user]:
-                print "[" + user + "]" +  "[" + i.web_link + "]"
+                bug_count = bug_count + 1
+                print "[" + str(bug_count) + "]" + "[" + user + "]" +  "[" + i.web_link + "]"
