@@ -30,6 +30,8 @@ def filter_bugs(bugs, num_days):
             output.append(bug)
     return output
 
+    # add a function to work with date instead of days
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Launchpad bug Reports.')
     parser.add_argument('-u', '--usernames', nargs="+", 
