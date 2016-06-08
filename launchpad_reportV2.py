@@ -11,7 +11,8 @@ launchpad = Launchpad.login_anonymously('just testing', 'production', cachedir, 
 def created_bugs(users, start_date):
     output = {}
     for user in users:
-        for bugs in launchpad.people(user).searchTasks(owner=user,created_since=start_date):
+        lp_user = launchpad.people(user)
+        for bugs in lp_user.searchTasks(owner=lp_user,created_since=start_date):
             output.setdefault(user, [])
             output[user].append(bugs)
         return output
