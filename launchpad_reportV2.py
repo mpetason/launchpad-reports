@@ -8,14 +8,13 @@ import argparse
 cachedir = ".launchpadlib/cache/"
 launchpad = Launchpad.login_anonymously('just testing', 'production', cachedir, version='devel')
 
-def created_bugs(users, start_date):
+def created_bugs(user, start_date):
     output = {}
-    for user in users:
-        lp_user = launchpad.people(user)
-        for bugs in lp_user.searchTasks(owner=lp_user,created_since=start_date):
-            output.setdefault(user, [])
-            output[user].append(bugs)
-        return output
+    lp_user = launchpad.people(user)
+    for bugs in lp_user.searchTasks(owner=lp_user,created_since=start_date):
+        output.setdefault(user, [])
+        output[user].append(bugs)
+    return output
 
 #def created_bugs(users):
 #    output = {}
@@ -65,10 +64,11 @@ if __name__ == "__main__":
             start_date = datetime.today() - timedelta(days=args.days)
         else: 
             start_date = args.date
+        filtered_bugs = {}
         for user in args.usernames:
-            bug_count = 0
             filtered_bugs[user] = created_bugs(user, start_date)
-            for bug in filter_bugs[user]:
+            bug_count = 0
+            for bug in filtered_bugs[user]:
                 bug_count = bug_count + 1
                 print "[" + str(bug_count) + "]" + "[" + user + "]" +  "[" + bug.web_link + "]"
 
