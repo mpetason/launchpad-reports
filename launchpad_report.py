@@ -22,30 +22,26 @@ def created_bugs(users):
                  output[user].append(i)
     return output
  
-def filter_by_days(bugs, num_days):
+def filter_by_days(bugs, num_days, date):
     date_range = datetime.today() - timedelta(days=num_days)
     output = []
     for bug in bugs:
-        if bug.date_created.replace(tzinfo=None) > date_range:
-            output.append(bug)
+        if date == 0:
+            if bug.date_created.replace(tzinfo=None) > date_range:
+                output.append(bug)
+        else:
+            if bug.date_created.replace(tzinfo=None) > date:
+                output.append(bug)
     return output
-
-def filter_by_date(bugs, date):
-#    output = []
-#    for bug in bugs:
-#        if bug.date_created.replace(tzinfo=None) > date:
-#            output.append(bug)
-#    return output
-    pass
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Launchpad bug Reports.')
     parser.add_argument('-u', '--usernames', nargs="+", 
                         help = 'enter usernames separated by spaces.')
-    parser.add_argument('-d', '--days', help = 'number of days to go back.',
+    parser.add_argument('-D', '--days', help = 'number of days to go back.',
                         type=int)
-#    parser.add_argument('-D', '--date', help = 'date in M-D-Y format',
-#                        type=int)
+    parser.add_argument('-d', '--date', help = 'date in M-D-Y format',
+                        type=int)
     args = parser.parse_args()
 
     if not args.usernames:
@@ -56,7 +52,10 @@ if __name__ == "__main__":
         filtered_bugs = {}
         for user in bug_reporters:
             bug_count = 0
-            filtered_bugs[user] = filter_by_days(bugs[user], args.days)
+            if not args.date:
+                filtered_bugs[user] = filter_by_days(bugs[user], args.days, 0)
+            else:
+                filtered_bugs[user] = filter_by_days(bugs[user], 0, args.date)
             for i in filtered_bugs[user]:
                 bug_count = bug_count + 1
                 print "[" + str(bug_count) + "]" + "[" + user + "]" +  "[" + i.web_link + "]"
