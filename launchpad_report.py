@@ -22,16 +22,12 @@ def created_bugs(users):
                  output[user].append(i)
     return output
  
-def filter_by_days(bugs, num_days, date):
+def filter_by_days(bugs, num_days, start_date):
     date_range = datetime.today() - timedelta(days=num_days)
     output = []
     for bug in bugs:
-        if date == 0:
-            if bug.date_created.replace(tzinfo=None) > date_range:
-                output.append(bug)
-        else:
-            if bug.date_created.replace(tzinfo=None) > date:
-                output.append(bug)
+        if bug.date_created.replace(tzinfo=None) > date_range:
+            output.append(bug)
     return output
 
 if __name__ == "__main__":
@@ -40,8 +36,7 @@ if __name__ == "__main__":
                         help = 'enter usernames separated by spaces.')
     parser.add_argument('-D', '--days', help = 'number of days to go back.',
                         type=int)
-    parser.add_argument('-d', '--date', help = 'date in M-D-Y format',
-                        type=int)
+    parser.add_argument('-d', '--date', help = 'date in Y-M-D format')
     args = parser.parse_args()
 
     if not args.usernames:
@@ -52,10 +47,7 @@ if __name__ == "__main__":
         filtered_bugs = {}
         for user in bug_reporters:
             bug_count = 0
-            if not args.date:
-                filtered_bugs[user] = filter_by_days(bugs[user], args.days, 0)
-            else:
-                filtered_bugs[user] = filter_by_days(bugs[user], 0, args.date)
+            filtered_bugs[user] = filter_by_days(bugs[user], args.days, args.date)
             for i in filtered_bugs[user]:
                 bug_count = bug_count + 1
                 print "[" + str(bug_count) + "]" + "[" + user + "]" +  "[" + i.web_link + "]"
