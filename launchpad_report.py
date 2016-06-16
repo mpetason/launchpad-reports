@@ -3,6 +3,7 @@
 #
 from launchpadlib.launchpad import Launchpad
 from datetime import timedelta, datetime
+from tabulate import tabulate
 import argparse
 
 cachedir = ".launchpadlib/cache/"
@@ -32,10 +33,11 @@ if __name__ == "__main__":
     else: 
         start_date = args.after
     filtered_bugs = {}
+    table_bugs = []
     for user in args.usernames:
         filtered_bugs[user] = created_bugs(user, start_date)
         bug_count = 0
         for bug in filtered_bugs[user]:
             bug_count = bug_count + 1
-            print "[" + str(bug_count) + "]" + "[" + user + "]" + "[" + bug.web_link + "]"
-
+            table_bugs.append([str(bug_count), user, bug.web_link])
+    print tabulate(table_bugs)
