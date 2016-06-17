@@ -40,4 +40,5 @@ if __name__ == "__main__":
         for bug in filtered_bugs[user]:
             bug_count = bug_count + 1
             table_bugs.append([bug_count, user, bug.web_link])
+# Adding a print for tabulate
     print tabulate(table_bugs, headers=["#", "Username", "Bug URL"], tablefmt="psql", numalign="left")
