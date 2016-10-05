@@ -21,7 +21,7 @@ def created_bugs(user, start_date):
 
 # If running via the CLI we will offer up options. 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description='Launchpad Bug Reports per User')
+    parser = argparse.ArgumentParser(description='Launchpad reporting for bugs opened by users')
     parser.add_argument('-u', '--usernames', nargs="+",
                         help = 'enter usernames separated by spaces.',
                         required = True)
