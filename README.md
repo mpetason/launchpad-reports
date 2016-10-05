@@ -1,8 +1,11 @@
-Requirements - launchpadlib, simplejson
+## Requirements 
+launchpadlib 
+simplejson
 
 
-usage: launchpad_report.py [-h] -u USERNAMES [USERNAMES ...] [-d DAYS]
-                           [-a AFTER]
+## Usage
+`launchpad_reports.py [-h] -u USERNAMES [USERNAMES ...] [-d DAYS]
+                           [-a AFTER]`
 
 Launchpad Bug Reports per User
 
