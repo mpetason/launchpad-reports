@@ -19,9 +19,14 @@ def bugs_created(user, start_date):
                    "Incomplete (without response)"
                    ])
 
-
-def bugs_comments(user):
-    pass
+# Function to find comments by users. 
+def bugs_comments(user, start_date):
+    lp_user = launchpad.people(user)
+    return lp_user.searchTasks(created_since=start_date,bug_commenter=lp_user,status=[
+        "New","Opinion","Invalid","Won't Fix","Expired","Confirmed","Triaged",
+        "In Progress","Fix Committed","Fix Released","Incomplete (with response)",
+        "Incomplete (without response)"
+        ])
 
 # If running via the CLI we will offer up options. 
 if __name__ == "__main__":
@@ -33,6 +38,9 @@ if __name__ == "__main__":
                         type=int)
     parser.add_argument('-a', '--after',
                         help = 'Search for bugs created After this date. Date is in Y-M-D format')
+    parser.add_argument('-c', '--comments',
+                        help = 'Search for only comments created by user',
+                        type=bool)
     args = parser.parse_args()
 
 # Find the start date so that we can find bugs created after it. 
@@ -42,12 +50,22 @@ if __name__ == "__main__":
         start_date = args.after
     filtered_bugs = {}
     table_bugs = []
-    for user in args.usernames:
-        filtered_bugs[user] = bugs_created(user, start_date)
-        bug_count = 0
-        for bug in filtered_bugs[user]:
-            bug_count = bug_count + 1
-            table_bugs.append([bug_count, user, bug.web_link])
+    if not args.comments:
+        for user in args.usernames:
+            filtered_bugs[user] = bugs_created(user, start_date)
+            bug_count = 0
+            for bug in filtered_bugs[user]:
+                bug_count = bug_count + 1
+                table_bugs.append([bug_count, user, bug.web_link,
+                    bug.date_created])
+    else:
+        for user in args.usernames:
+            filtered_bugs[user] = bugs_comments(user, start_date)
+            bug_count = 0
+            for bug in filtered_bugs[user]:
+                bug_count = bug_count + 1
+                table_bugs.append([bug_count, user, bug.web_link, 
+                    bug.date_created])
 
 # Printing out the data after collecting it in an easy to read format. 
-    print tabulate(table_bugs, headers=["#", "Username", "Bug URL"], tablefmt="psql", numalign="left")
+    print tabulate(table_bugs, headers=["#", "Username", "Bug URL", "Date Created"], tablefmt="psql", numalign="left")
