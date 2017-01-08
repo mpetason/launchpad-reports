@@ -19,10 +19,11 @@ def bugs_created(user, start_date):
                    "Incomplete (without response)"
                    ])
 
-# Function to find comments by users. 
+# Function to find comments by users. Currently shows all commented bugs - will
+# add the ability to only show comments from a specific date until now
 def bugs_comments(user, start_date):
     lp_user = launchpad.people(user)
-    return lp_user.searchTasks(created_since=start_date,bug_commenter=lp_user,status=[
+    return lp_user.searchTasks(bug_commenter=lp_user,status=[
         "New","Opinion","Invalid","Won't Fix","Expired","Confirmed","Triaged",
         "In Progress","Fix Committed","Fix Released","Incomplete (with response)",
         "Incomplete (without response)"
@@ -68,7 +69,7 @@ if __name__ == "__main__":
             bug_count = 0
             for bug in filtered_bugs[user]:
                 bug_count = bug_count + 1
-                table_bugs.append([bug_count, user, bug.web_link, 
+                table_bugs.append([bug_count, user, bug.web_link,
                     bug.date_created])
 
 # Printing out the data after collecting it in an easy to read format. 
