@@ -11,13 +11,17 @@ launchpad = Launchpad.login_anonymously('just testing', 'production', cachedir, 
 
 # Function to search for created bugs by a user using the tasks option in Launchpad
 # We are going to include all of the flag options. 
-def created_bugs(user, start_date):
+def bugs_created(user, start_date):
     lp_user = launchpad.people(user)
     return lp_user.searchTasks(owner=lp_user,created_since=start_date,status=[
                    "New","Opinion","Invalid","Won't Fix","Expired","Confirmed","Triaged",
                    "In Progress","Fix Committed","Fix Released","Incomplete (with response)",
                    "Incomplete (without response)"
                    ])
+
+
+def bugs_comments(user):
+    pass
 
 # If running via the CLI we will offer up options. 
 if __name__ == "__main__":
@@ -39,7 +43,7 @@ if __name__ == "__main__":
     filtered_bugs = {}
     table_bugs = []
     for user in args.usernames:
-        filtered_bugs[user] = created_bugs(user, start_date)
+        filtered_bugs[user] = bugs_created(user, start_date)
         bug_count = 0
         for bug in filtered_bugs[user]:
             bug_count = bug_count + 1
