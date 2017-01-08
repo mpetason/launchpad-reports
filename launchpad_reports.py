@@ -50,6 +50,8 @@ if __name__ == "__main__":
         start_date = args.after
     filtered_bugs = {}
     table_bugs = []
+
+    # If looking for created bugs, but not commented bugs
     if not args.comments:
         for user in args.usernames:
             filtered_bugs[user] = bugs_created(user, start_date)
@@ -58,6 +60,8 @@ if __name__ == "__main__":
                 bug_count = bug_count + 1
                 table_bugs.append([bug_count, user, bug.web_link,
                     bug.date_created])
+
+    # Else find all comments by user
     else:
         for user in args.usernames:
             filtered_bugs[user] = bugs_comments(user, start_date)
