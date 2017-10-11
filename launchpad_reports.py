@@ -5,18 +5,19 @@ from datetime import timedelta, datetime
 from tabulate import tabulate
 import argparse
 
-# Launchpad needs a cache directory. Create this before running, or it will end up getting created. 
+# Launchpad needs a cache directory. Create this before running, or it will
+# end up getting created.
 cachedir = ".launchpadlib/cache/"
-launchpad = Launchpad.login_anonymously('just testing', 'production', cachedir, version='devel')
+launchpad = Launchpad.login_anonymously('just testing', 'production', cachedir,
+                                        version='devel')
 
-# Function to search for created bugs by a user using the tasks option in Launchpad
-# We are going to include all of the flag options. 
+# Function to search for created bugs by a user using the tasks option.
 def bugs_created(user, start_date):
     lp_user = launchpad.people(user)
     return lp_user.searchTasks(owner=lp_user,created_since=start_date,status=[
-                   "New","Opinion","Invalid","Won't Fix","Expired","Confirmed","Triaged",
-                   "In Progress","Fix Committed","Fix Released","Incomplete (with response)",
-                   "Incomplete (without response)"
+                   "New","Opinion","Invalid","Won't Fix","Expired","Confirmed",
+                   "Triaged","In Progress","Fix Committed","Fix Released",
+                   "Incomplete (with response)","Incomplete (without response)"
                    ])
 
 # Function to find comments by users. Currently shows all commented bugs - will
@@ -25,26 +26,28 @@ def bugs_comments(user, start_date):
     lp_user = launchpad.people(user)
     return lp_user.searchTasks(bug_commenter=lp_user,status=[
         "New","Opinion","Invalid","Won't Fix","Expired","Confirmed","Triaged",
-        "In Progress","Fix Committed","Fix Released","Incomplete (with response)",
-        "Incomplete (without response)"
+        "In Progress","Fix Committed","Fix Released",
+        "Incomplete (with response)","Incomplete (without response)"
         ])
 
-# If running via the CLI we will offer up options. 
+# If running via the CLI we will offer up options.
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description='Launchpad reporting for bugs opened by users')
+    parser = argparse.ArgumentParser(description='Bugs created by specified'
+                                     ' users on Launchpad.')
     parser.add_argument('-u', '--usernames', nargs="+",
                         help = 'enter usernames separated by spaces.',
                         required = True)
     parser.add_argument('-d', '--days', help = 'number of days to go back.',
                         type=int)
     parser.add_argument('-a', '--after',
-                        help = 'Search for bugs created After this date. Date is in Y-M-D format')
+                        help = 'Search for bugs created After this date. '
+                        'Date is in Y-M-D format')
     parser.add_argument('-c', '--comments',
                         help = 'Search for only comments created by user',
                         type=bool)
     args = parser.parse_args()
 
-# Find the start date so that we can find bugs created after it. 
+# Find the start date so that we can find bugs created after it.
     if not args.after:
         start_date = datetime.today() - timedelta(days=args.days)
     else:
@@ -72,5 +75,7 @@ if __name__ == "__main__":
                 table_bugs.append([bug_count, user, bug.web_link,
                     bug.date_created])
 
-# Printing out the data after collecting it in an easy to read format. 
-    print tabulate(table_bugs, headers=["#", "Username", "Bug URL", "Date Created"], tablefmt="psql", numalign="left")
+# Printing out the data after collecting it in an easy to read format.
+    print(tabulate(table_bugs, headers=["#", "Username", "Bug URL",
+                                        "Date Created"], tablefmt="psql",
+                                        numalign="left"))
